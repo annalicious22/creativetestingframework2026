@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paid Social Creative Testing Framework</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f3; color: #1a1a18; padding: 2rem 1rem; }
+  .fw { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; }
+  .main-title { text-align: center; font-size: 20px; font-weight: 500; color: #1a1a18; margin: 0 0 1.25rem; letter-spacing: -.01em; }
+  .lw { border: 0.5px solid #d3d1c7; border-radius: 12px; padding: 1.25rem 1.5rem; background: #fff; }
+  .lt { text-align: center; font-size: 16px; font-weight: 500; color: #1a1a18; margin: 0 0 4px; }
+  .lsub { text-align: center; font-size: 12px; color: #888780; margin: 0 0 1.25rem; }
+  .sec-arrow { text-align: center; padding: 8px 0; color: #b4b2a9; font-size: 18px; }
+  .flow { display: flex; flex-direction: column; align-items: center; }
+  .step-row { display: flex; align-items: center; gap: 8px; justify-content: center; }
+  .va { color: #b4b2a9; font-size: 15px; padding: 5px 0; text-align: center; line-height: 1; }
+  .ha { color: #185FA5; font-size: 13px; line-height: 1; flex-shrink: 0; }
+  .ps { background: #E6F1FB; border: 0.5px solid #85B7EB; border-radius: 20px; padding: 7px 16px; font-size: 12px; font-weight: 500; color: #0C447C; cursor: pointer; transition: all .15s; user-select: none; white-space: nowrap; }
+  .ps:hover, .ps.on { background: #185FA5; color: #fff; border-color: #185FA5; }
+  .pl { background: #E6F1FB; border: 0.5px dashed #85B7EB; border-radius: 20px; padding: 7px 16px; font-size: 12px; font-weight: 500; color: #0C447C; cursor: pointer; transition: all .15s; user-select: none; }
+  .pl:hover, .pl.on { background: #185FA5; color: #fff; border-color: #185FA5; }
+  .dp { max-height: 0; overflow: hidden; transition: max-height .32s ease, opacity .25s ease, margin-top .25s ease; opacity: 0; margin-top: 0; }
+  .dp.open { max-height: 200px; opacity: 1; margin-top: 1rem; }
+  .di { background: #E6F1FB; border: 0.5px solid #85B7EB; border-radius: 10px; padding: 13px 16px; }
+  .dh { font-size: 13px; font-weight: 500; color: #0C447C; margin: 0 0 5px; }
+  .db { font-size: 12px; color: #3d3d3a; margin: 0; line-height: 1.65; }
+  .tag { border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 76px; }
+  .tti { font-size: 13px; font-weight: 500; display: block; }
+  .tsu { font-size: 11px; display: block; margin-top: 3px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+  .l1 { background: #EEEDFE; border: 0.5px solid #AFA9EC; } .l1 .tti { color: #26215C; } .l1 .tsu { color: #534AB7; }
+  .l2 { background: #E1F5EE; border: 0.5px solid #5DCAA5; } .l2 .tti { color: #04342C; } .l2 .tsu { color: #0F6E56; }
+  .l3 { background: #FAECE7; border: 0.5px solid #F0997B; } .l3 .tti { color: #4A1B0C; } .l3 .tsu { color: #993C1D; }
+  .l4 { background: #FAEEDA; border: 0.5px solid #EF9F27; } .l4 .tti { color: #412402; } .l4 .tsu { color: #854F0B; }
+  .gr { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+  .gc { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .gl { font-size: 11px; color: #888780; letter-spacing: .04em; font-weight: 500; }
+  .gt { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 500px; }
+  .dv { width: 0.5px; background: #d3d1c7; align-self: stretch; margin: 0 4px; }
+  .fm { background: #f1efe8; border-radius: 8px; padding: 10px 16px; text-align: center; font-size: 12px; color: #888780; margin-top: 1rem; line-height: 1.6; }
+  .stat-card { background: #f1efe8; border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 180px; max-width: 240px; }
+  .stat-label { font-size: 11px; font-weight: 500; color: #888780; letter-spacing: .04em; margin: 0 0 6px; }
+  .stat-val { font-size: 22px; font-weight: 500; color: #1a1a18; margin: 0 0 6px; line-height: 1; }
+  .stat-unit { font-size: 13px; font-weight: 400; color: #888780; }
+  .stat-note { font-size: 11px; color: #888780; margin: 0; line-height: 1.55; }
+  .leg { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 1.25rem; font-size: 12px; }
+  .li { display: flex; align-items: center; gap: 6px; color: #888780; }
+  .sw { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a18; color: #e8e6de; }
+    .lw { background: #2c2c2a; border-color: #444441; }
+    .lt { color: #e8e6de; } .lsub, .gl, .li { color: #888780; }
+    .sec-arrow, .va { color: #5f5e5a; }
+    .ps, .pl { background: #042C53; border-color: #185FA5; color: #B5D4F4; }
+    .ps:hover, .ps.on, .pl:hover, .pl.on { background: #378ADD; color: #042C53; border-color: #378ADD; }
+    .ha { color: #85B7EB; }
+    .di { background: #042C53; border-color: #185FA5; }
+    .dh { color: #B5D4F4; } .db { color: #c2c0b6; }
+    .l1 { background: #26215C; border-color: #534AB7; } .l1 .tti { color: #CECBF6; } .l1 .tsu { color: #AFA9EC; }
+    .l2 { background: #04342C; border-color: #0F6E56; } .l2 .tti { color: #9FE1CB; } .l2 .tsu { color: #5DCAA5; }
+    .l3 { background: #4A1B0C; border-color: #993C1D; } .l3 .tti { color: #F5C4B3; } .l3 .tsu { color: #F0997B; }
+    .l4 { background: #412402; border-color: #854F0B; } .l4 .tti { color: #FAC775; } .l4 .tsu { color: #EF9F27; }
+    .dv { background: #444441; }
+    .fm { background: #222220; color: #888780; }
+    .stat-card { background: #222220; }
+    .stat-val { color: #e8e6de; }
+    #main-title { color: #e8e6de; }
+    .main-title { color: #e8e6de; }
+  }
+</style>
+</head>
+<body>
+<div class="fw">
+
+  <h1 class="main-title">Paid Social Creative Testing Framework</h1>
+
+  <div class="lw">
+    <p class="lt">Creative testing process</p>
+    <p class="lsub">Continuous cycle — click any step for details</p>
+    <div class="flow">
+      <div class="step-row">
+        <span class="ps" data-i="0">Market research</span>
+        <span class="ha">→</span>
+        <span class="ps" data-i="1">Performance analysis</span>
+      </div>
+      <div class="va">↓</div>
+      <div class="step-row">
+        <span class="ps" data-i="2">Brainstorm ideas</span>
+      </div>
+      <div class="va">↓</div>
+      <div class="step-row">
+        <span class="ps" data-i="3">Iterate on winners</span>
+        <span class="ha">→</span>
+        <span class="ps" data-i="4">A/B test concepts</span>
+      </div>
+      <div class="va">↓</div>
+      <div class="step-row">
+        <span class="ps" data-i="5">Analyze performance</span>
+      </div>
+      <div class="va">↓</div>
+      <div class="step-row">
+        <span class="ps" data-i="6">Template wins</span>
+      </div>
+      <div class="va">↓</div>
+      <div class="step-row">
+        <span class="ps" data-i="1">Performance analysis</span>
+        <span class="ha">→</span>
+        <span class="pl" data-i="7">↺ Repeat</span>
+      </div>
+    </div>
+    <div class="dp" id="dp">
+      <div class="di">
+        <p class="dh" id="dh"></p>
+        <p class="db" id="db"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-arrow">↓</div>
+
+  <div class="lw">
+    <p class="lt">Level 1 — Creative type</p>
+    <div class="row" style="margin-top:.75rem">
+      <div class="tag l1"><span class="tti">Static</span><span class="tsu">Image-based ads</span></div>
+      <div class="tag l1"><span class="tti">Video</span><span class="tsu">Motion-based ads</span></div>
+    </div>
+  </div>
+
+  <div class="sec-arrow">↓</div>
+
+  <div class="lw">
+    <p class="lt">Level 2 — Creative format / angle</p>
+    <p class="lsub">Specific angle per creative type — lives in the execution library per brand</p>
+    <div class="gr">
+      <div class="gc">
+        <span class="gl">Static angles</span>
+        <div class="gt">
+          <div class="tag l2"><span class="tti">Gameplay</span><span class="tsu">In-game footage</span></div>
+          <div class="tag l2"><span class="tti">Offer</span><span class="tsu">Bonus / reward</span></div>
+          <div class="tag l2"><span class="tti">Cash</span><span class="tsu">Money focus</span></div>
+          <div class="tag l2"><span class="tti">Jackpot</span><span class="tsu">Big win</span></div>
+          <div class="tag l2"><span class="tti">Winner</span><span class="tsu">Social proof</span></div>
+          <div class="tag l2"><span class="tti">Live casino</span><span class="tsu">Real dealer</span></div>
+          <div class="tag l2"><span class="tti">Organic</span><span class="tsu">Natural / authentic</span></div>
+          <div class="tag l2"><span class="tti">Seasonal</span><span class="tsu">Timely moment</span></div>
+          <div class="tag l2"><span class="tti">Cultural</span><span class="tsu">Local relevance</span></div>
+        </div>
+      </div>
+      <div class="dv"></div>
+      <div class="gc">
+        <span class="gl">Video types — all can be AI</span>
+        <div class="gt">
+          <div class="tag l2"><span class="tti">UGC</span><span class="tsu">User-generated style</span></div>
+          <div class="tag l2"><span class="tti">Influencer</span><span class="tsu">Creator-led</span></div>
+          <div class="tag l2"><span class="tti">Gameplay</span><span class="tsu">In-game footage</span></div>
+          <div class="tag l2"><span class="tti">Podcast</span><span class="tsu">Conversational</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-arrow">↓</div>
+
+  <div class="lw">
+    <p class="lt">Level 3 — UGC video angles</p>
+    <p class="lsub">Narrative angle within UGC-style video — matched to concept by the creative strategist</p>
+    <div class="row">
+      <div class="tag l3"><span class="tti">Explainer</span><span class="tsu">How it works</span></div>
+      <div class="tag l3"><span class="tti">Win reaction</span><span class="tsu">Emotional response</span></div>
+      <div class="tag l3"><span class="tti">Personal experience</span><span class="tsu">Share story</span></div>
+      <div class="tag l3"><span class="tti">Product sell</span><span class="tsu">Direct pitch</span></div>
+      <div class="tag l3"><span class="tti">Seasonal push</span><span class="tsu">Timely hook</span></div>
+      <div class="tag l3"><span class="tti">Cultural moment</span><span class="tsu">Trending angle</span></div>
+      <div class="tag l3"><span class="tti">Storytelling</span><span class="tsu">Narrative arc</span></div>
+    </div>
+  </div>
+
+  <div class="sec-arrow">↓</div>
+
+  <div class="lw">
+    <p class="lt">Level 4 — Testing variables</p>
+    <p class="lsub">Variables tested within each creative — this is where volume is generated (6–12 variations per concept)</p>
+    <div class="row">
+      <div class="tag l4"><span class="tti">Hook</span><span class="tsu">First 3 seconds</span></div>
+      <div class="tag l4"><span class="tti">Copy</span><span class="tsu">Body + benefit angle</span></div>
+      <div class="tag l4"><span class="tti">CTA</span><span class="tsu">Play now / Claim etc.</span></div>
+      <div class="tag l4"><span class="tti">Visual</span><span class="tsu">Colour / overlay</span></div>
+      <div class="tag l4"><span class="tti">Length</span><span class="tsu">15s / 30s / 45s</span></div>
+      <div class="tag l4"><span class="tti">Format</span><span class="tsu">1:1 / 9:16 / 16:9</span></div>
+    </div>
+    <div class="fm">
+      1 brief → 1 creative angle → 2 hooks → 2 scripts/copy → 2 lengths → 3 formats = <strong style="color:#5f5e5a">24 assets per brief</strong>
+    </div>
+  </div>
+
+  <div class="sec-arrow">↓</div>
+
+  <div class="lw">
+    <p class="lt">Our numbers</p>
+    <p class="lsub">Monthly averages across B2 brands</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+      <div class="stat-card">
+        <p class="stat-label">Requests</p>
+        <p class="stat-val">40 <span class="stat-unit">briefs/month</span></p>
+        <p class="stat-note">~2 briefs/day · 65% static · 35% video<br>+15% increase in video requests in 2026</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Deliverables</p>
+        <p class="stat-val">~30 <span class="stat-unit">tasks/month</span></p>
+        <p class="stat-note">Tasks delivered per month on average</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Tests</p>
+        <p class="stat-val">400 <span class="stat-unit">new ads/month</span></p>
+        <p class="stat-note">New ads added across paid social channels, across B2 brands</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="leg">
+    <div class="li"><div class="sw" style="background:#EEEDFE;border:0.5px solid #AFA9EC"></div>Creative type</div>
+    <div class="li"><div class="sw" style="background:#E1F5EE;border:0.5px solid #5DCAA5"></div>Format / angle</div>
+    <div class="li"><div class="sw" style="background:#FAECE7;border:0.5px solid #F0997B"></div>UGC angle</div>
+    <div class="li"><div class="sw" style="background:#FAEEDA;border:0.5px solid #EF9F27"></div>Test variable</div>
+  </div>
+
+</div>
+
+<script>
+var steps = [
+  {
+    h: "Market research",
+    b: "Monitor what competitors are running across ad libraries (Meta, TikTok, etc.) and through dedicated competitor analysis tools (Segwise, SensorTower, etc.). Pay attention to creative formats, messaging angles, and how long ads have been running — as spend volume and live dates are a proxy for performance. Map gaps, trending hooks, and untested angles your brand can exploit."
+  },
+  {
+    h: "Performance analysis",
+    b: "Review existing creative performance data to identify trends and patterns. Analyse which concept types have the best CVR, CPA and ROAS, which formats are scaling, which angles are declining, and where untested opportunities lie. Use this to prioritise the next wave of creative briefs."
+  },
+  {
+    h: "Brainstorm ideas",
+    b: "Generate new creative concepts based on competitor strategy and performance data insights. Map each idea to a creative type, angle, and format before briefing. Every concept needs a clear strategic rationale — no idea enters production without being grounded in data or competitor learnings."
+  },
+  {
+    h: "Iterate on winners",
+    b: "Take top-performing creatives and produce variants that change one or two elements — hook, copy, visual, CTA — while keeping the proven concept intact. This is the fastest way to scale volume because you are building on a formula that already works rather than starting from scratch."
+  },
+  {
+    h: "A/B test concepts",
+    b: "Isolate one variable per test to pinpoint exactly which element is driving performance. Run controlled tests across hook, copy, CTA, visual, length, and format. Each test builds a reliable knowledge base of winning components that compounds in value and sharpens every future brief."
+  },
+  {
+    h: "Analyze performance",
+    b: "Pull fresh performance data from current tests and ongoing campaigns. Identify what is winning, what is declining, and what needs refreshing. This analysis determines which concepts are ready to be templated and which require further iteration before the next cycle begins."
+  },
+  {
+    h: "Template wins",
+    b: "Once a creative concept is proven, convert its structure into a reusable template through Figma — capturing hook format, copy structure, visual style, and CTA. Templates cut briefing time, accelerate production, and ensure high-performing formulas are consistently replicated across campaigns and markets."
+  },
+  {
+    h: "Repeat",
+    b: "Feed all learnings back into the process and restart the cycle from performance analysis. Every test adds to the knowledge base, every template raises the baseline, and every research pass surfaces new competitor moves. The loop never stops — the methodology compounds over time."
+  }
+];
+
+var cur = null;
+document.querySelectorAll('[data-i]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var i = parseInt(btn.getAttribute('data-i'));
+    var panel = document.getElementById('dp');
+    var isActive = btn.classList.contains('on');
+
+    document.querySelectorAll('[data-i]').forEach(function(b) { b.classList.remove('on'); });
+
+    if (isActive) {
+      panel.classList.remove('open');
+      cur = null;
+      return;
+    }
+
+    document.querySelectorAll('[data-i="' + i + '"]').forEach(function(b) { b.classList.add('on'); });
+    document.getElementById('dh').textContent = steps[i].h;
+    document.getElementById('db').textContent = steps[i].b;
+    panel.classList.add('open');
+    cur = i;
+  });
+});
+</script>
+</body>
+</html>
